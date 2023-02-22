@@ -8,8 +8,8 @@ function App() {
     <>
       <Layout />
       <Container>
-        {/* <AddStudent /> */}
-        <AddCourse />
+        <AddStudent />
+        {/* <AddCourse />s */}
       </Container>
     </>
   );
