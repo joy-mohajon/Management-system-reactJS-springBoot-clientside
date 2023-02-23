@@ -12,9 +12,9 @@ const Layout = () => {
           <Navbar.Brand href="#home"></Navbar.Brand>
           <Nav className="m-auto">
             <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/addstudent">Add Student</Nav.Link>
-            <Nav.Link href="/addcourse">Add Course</Nav.Link>
-            <Nav.Link href="/ShowDetails">Show Details</Nav.Link>
+            <Nav.Link href="/addstudent/">Add Student</Nav.Link>
+            <Nav.Link href="/addcourse/">Add Course</Nav.Link>
+            <Nav.Link href="/ShowDetails/">Show Details</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
