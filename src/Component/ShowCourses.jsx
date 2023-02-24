@@ -18,7 +18,7 @@ const ShowCourses = ({ update }) => {
     <>
       <h2 className="text-center mb-4 mt-5">All Courses</h2>
       <table className="table">
-        <thead className="table-info">
+        <thead className="table-primary">
           <tr>
             <th scope="col">#</th>
             <th scope="col">Code</th>

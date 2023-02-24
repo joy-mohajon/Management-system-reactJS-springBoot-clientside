@@ -1,20 +1,71 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { useQuery } from "react-query";
+import fetchCourses from "../Fetchdata/fetchCourses";
+import MultiSelectDropdown from "./MultiSelectDropdown";
 
 const AddStudent = () => {
+  const { data } = useQuery("courses", () => fetchCourses());
+  const courseData = [];
+  const [filterCourses, setFilterCourses] = useState(courseData);
+  const departments = [];
+  const [dptNames, setDptNames] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState([]);
+
   const [stdName, setStdName] = useState("");
   const [stdId, setStdId] = useState("");
   const [Semester, setSemester] = useState("");
-  const [dptName, setDptName] = useState("");
+  const [dptName, setDptName] = useState("hello");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(Semester);
+    // setCourses(data);
+    const info = {
+      name: stdName,
+      roll: stdId,
+      email: email,
+      semester: Semester,
+      department: dptName,
+      address: address,
+      course: selectedCourse,
+    };
+    console.log("data", data);
+    console.log("data", typeof data);
+    console.log("selected", selectedCourse);
+  };
+
+  useEffect(() => {
+    if (data) {
+      data.forEach((course) => {
+        const { department } = course;
+        console.log(department);
+        if (!departments.includes(department)) {
+          departments.push(department);
+        }
+        courseData.push(course);
+      });
+    }
+    console.log("courseDta", courseData);
+    setDptNames(departments);
+    setFilterCourses(courseData);
+  }, [data]);
+
+  const selectedCourseData = (courses) => {
+    setSelectedCourse(courses);
+  };
+
+  const filterCourse = (e) => {
+    setDptName(e.target.value);
+
+    const newCourses = Object.values(data).filter(
+      (course) => course.department === e.target.value
+    );
+    setFilterCourses(newCourses);
   };
 
   return (
@@ -40,10 +91,7 @@ const AddStudent = () => {
         </Form.Group>
         <Form.Group as={Col} controlId="formGridState">
           <Form.Label>Enrolled Semester</Form.Label>
-          <Form.Select
-            value={Semester}
-            onChange={(e) => setSemester(e.target.value)}
-          >
+          <Form.Select value={Semester} onChange={(e) => setSemester(e)}>
             <option className="d-none">Choose...</option>
             <option value="Fall 2023">Fall 2023</option>
             <option value="Spring 2023">Spring 2023</option>
@@ -54,11 +102,24 @@ const AddStudent = () => {
 
       <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
         <Form.Label>Department</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Enter deparment name"
-          value={dptName}
-          onChange={(e) => setDptName(e.target.value)}
+        <Form.Select value={dptName} onChange={(e) => filterCourse(e)}>
+          <option className="d-none">Choose...</option>
+          {dptNames &&
+            dptNames.map((department, index) => {
+              return (
+                <option key={index} value={department}>
+                  {department}
+                </option>
+              );
+            })}
+        </Form.Select>
+      </Form.Group>
+
+      <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
+        <Form.Label>Courses</Form.Label>
+        <MultiSelectDropdown
+          courses={filterCourses}
+          selectedCourses={selectedCourseData}
         />
       </Form.Group>
 
