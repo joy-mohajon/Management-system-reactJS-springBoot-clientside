@@ -1,8 +1,8 @@
 import Layout from "./Component/Layout";
 import AddStudent from "./Component/AddStudent";
-import AddCourse from "./Component/AddCourse";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./Component/Home";
+import Course from "./Component/Pages/Course";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="addstudent/" element={<AddStudent />} />
-          <Route path="addcourse/" element={<AddCourse />} />
+          <Route path="addcourse/" element={<Course />} />
         </Route>
       </Routes>
     </Router>

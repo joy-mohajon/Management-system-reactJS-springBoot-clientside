@@ -2,28 +2,42 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 
-const AddCourse = () => {
+const AddCourse = ({ updateState }) => {
   const [dptName, setDptName] = useState("");
   const [courseName, setCourseName] = useState("");
   const [courseCode, setCourseCode] = useState("");
   const [courseCredit, setCourseCredit] = useState("");
   const [courseFee, setCourseFee] = useState("");
+  const [update, setUpdate] = useState(true);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("courseName:", courseName);
+    setUpdate((preUpdate) => !preUpdate);
     const data = {
-      c_name: courseName,
-      c_code: courseCode,
-      c_credit: courseCredit,
-      c_fee: courseFee,
-      department: dptName,
+      c_name: courseName.trim(),
+      c_code: courseCode.trim(),
+      c_credit: courseCredit.trim(),
+      c_fee: courseFee.trim(),
+      department: dptName.trim(),
     };
     console.log("data:", data);
-    axios
-      .post("http://localhost:8081/api/addcourse/", data)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+
+    const postCourse = async () => {
+      await axios
+        .post("http://localhost:8081/api/addcourse/", data)
+        .then((res) => console.log("res:", res))
+        .catch((err) => console.log("err:", err));
+    };
+    postCourse();
+
+    setCourseName("");
+    setCourseCode("");
+    setCourseCredit("");
+    setCourseFee("");
+    setDptName("");
+
+    // for table updata
+    updateState();
   };
 
   return (
