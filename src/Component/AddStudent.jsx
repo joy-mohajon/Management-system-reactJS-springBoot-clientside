@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -21,6 +22,7 @@ const AddStudent = () => {
   const [dptName, setDptName] = useState("hello");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [payable, setPayable] = useState(0);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -32,11 +34,21 @@ const AddStudent = () => {
       semester: Semester,
       department: dptName,
       address: address,
-      course: selectedCourse,
+      courses: selectedCourse,
+      payable: payable,
     };
+
+    const postStudent = async () => {
+      await axios
+        .post("http://localhost:8081/api/addstudent/", info)
+        .then((res) => console.log("addStudent:", res))
+        .catch((err) => console.log("stdErr: ", err));
+    };
+    postStudent();
     console.log("data", data);
     console.log("data", typeof data);
     console.log("selected", selectedCourse);
+    console.log("payable", payable);
   };
 
   useEffect(() => {
@@ -57,6 +69,15 @@ const AddStudent = () => {
 
   const selectedCourseData = (courses) => {
     setSelectedCourse(courses);
+
+    selectedCourse.forEach((course) => {
+      filterCourses.forEach((courseData) => {
+        if (courseData.c_name === course) {
+          let amount = Number(courseData.c_fee);
+          setPayable((prev) => (prev += amount));
+        }
+      });
+    });
   };
 
   const filterCourse = (e) => {
@@ -91,7 +112,10 @@ const AddStudent = () => {
         </Form.Group>
         <Form.Group as={Col} controlId="formGridState">
           <Form.Label>Enrolled Semester</Form.Label>
-          <Form.Select value={Semester} onChange={(e) => setSemester(e)}>
+          <Form.Select
+            value={Semester}
+            onChange={(e) => setSemester(e.target.value)}
+          >
             <option className="d-none">Choose...</option>
             <option value="Fall 2023">Fall 2023</option>
             <option value="Spring 2023">Spring 2023</option>
