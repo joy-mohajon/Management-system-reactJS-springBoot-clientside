@@ -49,6 +49,7 @@ const AddCourse = ({ updateState }) => {
           placeholder="Enter course name"
           value={courseName}
           onChange={(e) => setCourseName(e.target.value)}
+          required
         />
       </Form.Group>
       <Form.Group as={Col} controlId="" className="mb-3">
@@ -58,6 +59,7 @@ const AddCourse = ({ updateState }) => {
           placeholder="Enter course code"
           value={courseCode}
           onChange={(e) => setCourseCode(e.target.value)}
+          required
         />
       </Form.Group>
       <Row>
@@ -68,6 +70,7 @@ const AddCourse = ({ updateState }) => {
             placeholder="Enter course credit"
             value={courseCredit}
             onChange={(e) => setCourseCredit(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group as={Col} controlId="" className="mb-3">
@@ -77,6 +80,7 @@ const AddCourse = ({ updateState }) => {
             placeholder="Enter course fee amount"
             value={courseFee}
             onChange={(e) => setCourseFee(e.target.value)}
+            required
           />
         </Form.Group>
       </Row>
@@ -87,6 +91,7 @@ const AddCourse = ({ updateState }) => {
           placeholder="Enter Department name"
           value={dptName}
           onChange={(e) => setDptName(e.target.value)}
+          required
         />
       </Form.Group>
 
