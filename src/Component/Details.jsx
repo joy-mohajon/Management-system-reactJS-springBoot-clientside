@@ -1,29 +1,36 @@
 import axios from "axios";
-import { isEmpty } from "lodash";
-import { useEffect, useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
+import { filter, isEmpty } from "lodash";
+import React, { useEffect, useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
 import { useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
 import fetchCourses from "../Fetchdata/fetchCourses";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 
-const AddStudent = ({ updateState }) => {
-  const { data } = useQuery("courses", () => fetchCourses());
+const Details = (props) => {
+  const location = useLocation();
+  console.log("location", location);
+  const showStudent = location.state.student;
+  const data = location.state.courses;
+  console.log("shwoStudent", showStudent.courses);
+  //   const { data } = useQuery("courses", () => fetchCourses());
+
   const courseData = [];
   const [filterCourses, setFilterCourses] = useState(courseData);
+  console.log("filterC", filterCourses);
   const departments = [];
   const [dptNames, setDptNames] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState([]);
+  //   const [preSelectCourse, setPreSelectCourse] = useState(showStudent.courses);
 
-  const [stdName, setStdName] = useState("");
-  const [stdId, setStdId] = useState("");
-  const [Semester, setSemester] = useState("");
-  const [dptName, setDptName] = useState("");
-  const [email, setEmail] = useState("");
-  const [address, setAddress] = useState("");
-  const [payable, setPayable] = useState(0);
+  const [id, setId] = useState(showStudent.id);
+  const [stdName, setStdName] = useState(showStudent.name);
+  const [stdId, setStdId] = useState(showStudent.roll);
+  const [Semester, setSemester] = useState(showStudent.semester);
+  const [dptName, setDptName] = useState(showStudent.department);
+  const [email, setEmail] = useState(showStudent.email);
+  const [address, setAddress] = useState(showStudent.address);
+  const [payable, setPayable] = useState(showStudent.payable);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -33,6 +40,7 @@ const AddStudent = ({ updateState }) => {
     }
 
     const info = {
+      id: id,
       name: stdName,
       roll: stdId,
       email: email,
@@ -45,21 +53,17 @@ const AddStudent = ({ updateState }) => {
 
     const postStudent = async () => {
       await axios
-        .post("http://localhost:8081/api/addstudent/", info)
+        .post("http://localhost:8081/api/addstudent/update", info)
         .then((res) => console.log("addStudent:", res))
         .catch((err) => console.log("stdErr: ", err));
     };
     postStudent();
-
-    // for update student table
-    updateState();
   };
 
   useEffect(() => {
     if (data) {
       data.forEach((course) => {
         const { department } = course;
-        // console.log(department);
         if (!departments.includes(department)) {
           departments.push(department);
         }
@@ -69,6 +73,11 @@ const AddStudent = ({ updateState }) => {
     // console.log("courseDta", courseData);
     setDptNames(departments);
     setFilterCourses(courseData);
+    console.log("course", selectedCourse);
+    const newCourses = Object.values(data).filter(
+      (course) => course.department === dptName
+    );
+    setFilterCourses(newCourses);
   }, [data]);
 
   const selectedCourseData = (courses) => {
@@ -86,6 +95,9 @@ const AddStudent = ({ updateState }) => {
 
   const filterCourse = (e) => {
     setDptName(e.target.value);
+    // if (dptName !== showStudent.departments) {
+    //   setPreSelectCourse([]);
+    // }
 
     const newCourses = Object.values(data).filter(
       (course) => course.department === e.target.value
@@ -99,7 +111,7 @@ const AddStudent = ({ updateState }) => {
         <Form.Label>Name</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Enter your name"
+          //   placeholder="Enter your name"
           value={stdName}
           onChange={(e) => setStdName(e.target.value)}
           required
@@ -110,7 +122,7 @@ const AddStudent = ({ updateState }) => {
           <Form.Label>Roll No</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter roll no"
+            // placeholder="Enter roll no"
             value={stdId}
             onChange={(e) => setStdId(e.target.value)}
             required
@@ -153,7 +165,7 @@ const AddStudent = ({ updateState }) => {
         <Form.Label>Courses</Form.Label>
         <MultiSelectDropdown
           courses={filterCourses}
-          showStudent={[]}
+          showStudent={showStudent}
           selectedCourses={selectedCourseData}
         />
       </Form.Group>
@@ -181,10 +193,10 @@ const AddStudent = ({ updateState }) => {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-        Add Student
+        Update Student
       </Button>
     </Form>
   );
 };
 
-export default AddStudent;
+export default Details;

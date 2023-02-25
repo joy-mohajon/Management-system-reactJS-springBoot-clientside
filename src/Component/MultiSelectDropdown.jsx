@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { isEmpty } from "lodash";
+import { useEffect, useState } from "react";
 import styles from "./Styles/Dropdown.module.css";
 
-const MultiSelectDropdown = ({ courses, selectedCourses }) => {
+const MultiSelectDropdown = ({ courses, selectedCourses, showStudent }) => {
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    if (!isEmpty(showStudent) && !isEmpty(courses)) {
+      console.log("LLLLLLLLLLLLLLLLLLLLLLLLL");
+      const { department } = courses[0];
+
+      if (showStudent && department === showStudent.department) {
+        setSelectedOptions(showStudent.courses);
+      } else {
+        setSelectedOptions([]);
+        // console.log("dpartmesssssssssssssssssss", selectedOptions);
+      }
+    }
+  }, [courses, showStudent]);
 
   const handleCheckboxChange = (event, option) => {
     const value = event.target.value;

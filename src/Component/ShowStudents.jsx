@@ -1,14 +1,21 @@
 import React, { useEffect } from "react";
 import { useQuery } from "react-query";
+import { Link, Navigate, Redirect, useNavigate } from "react-router-dom";
+import fetchCourses from "../Fetchdata/fetchCourses";
 import fetchStudents from "../Fetchdata/fetchStudents";
 
 const ShowStudents = ({ update }) => {
   const { data, refetch } = useQuery("students", () => fetchStudents());
+  const { data: courses } = useQuery("courses", () => fetchCourses());
+  const navigate = useNavigate();
+
   console.log("student", data);
+  console.log("courses", courses);
 
   useEffect(() => {
     refetch();
   }, [refetch, update]);
+
 
   return (
     <>
@@ -45,7 +52,15 @@ const ShowStudents = ({ update }) => {
                   <td className="text-center">{student.email}</td>
                   <td className="text-center">{student.semester}</td>
                   <td className="text-center">{student.department}</td>
-                  <td className="text-center">Update</td>
+                  <td>
+                    <Link
+                      to="details/"
+                      className="text-center"
+                      state={{ student, courses }}
+                    >
+                      Show
+                    </Link>
+                  </td>
                 </tr>
               );
             })}
