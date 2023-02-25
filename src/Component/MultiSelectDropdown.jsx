@@ -17,12 +17,12 @@ const MultiSelectDropdown = ({ courses, selectedCourses }) => {
 
   return (
     <div className={styles.dropdown_container}>
-      <button
+      <div
         className={styles.dropdown_button}
         onClick={() => setShowDropdown(!showDropdown)}
       >
         Select Courses
-      </button>
+      </div>
       {showDropdown && (
         <div className={styles.dropdown_menu}>
           {courses &&
