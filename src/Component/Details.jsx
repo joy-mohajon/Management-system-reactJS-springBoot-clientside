@@ -106,7 +106,7 @@ const Details = (props) => {
   };
 
   return (
-    <Form className="mt-4" onSubmit={submitHandler}>
+    <Form className="mt-4 mb-4" onSubmit={submitHandler}>
       <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
         <Form.Label>Name</Form.Label>
         <Form.Control

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 const ShowCourses = ({ update }) => {
   const [courses, setCourses] = useState([]);
+  const [flag, setFlag] = useState(true);
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -12,7 +13,14 @@ const ShowCourses = ({ update }) => {
         .catch((err) => console.log("fetchErr:", err));
     };
     fetchCourse();
-  }, [update]);
+  }, [update, flag]);
+
+  const deleteStudent = async (id) => {
+    await axios
+      .post(`http://localhost:8081/api/courses/${id}/delete`)
+      .then((res) => setFlag(!flag))
+      .catch((err) => console.log("error", err));
+  };
 
   return (
     <>
@@ -37,6 +45,7 @@ const ShowCourses = ({ update }) => {
         <tbody>
           {courses &&
             courses.map((course, index) => {
+              console.log("coourseId", course);
               return (
                 <tr key={index}>
                   <th scope="row">{index + 1}</th>
@@ -45,6 +54,14 @@ const ShowCourses = ({ update }) => {
                   <td className="text-center">{course.c_credit}</td>
                   <td className="text-center">{course.c_fee}</td>
                   <td className="text-center">{course.department}</td>
+                  <td>
+                    <button
+                      className="border-0 mx-2 bg-info"
+                      onClick={() => deleteStudent(course.c_id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               );
             })}
