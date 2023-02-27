@@ -32,7 +32,7 @@ const Details = (props) => {
   const [dptName, setDptName] = useState(showStudent.department);
   const [email, setEmail] = useState(showStudent.email);
   const [address, setAddress] = useState(showStudent.address);
-  const [payable, setPayable] = useState(showStudent.payable);
+  const [payable, setPayable] = useState(Number(showStudent.payable));
 
   const navigate = useNavigate();
 
@@ -91,12 +91,15 @@ const Details = (props) => {
 
   const selectedCourseData = (courses) => {
     setSelectedCourse(courses);
-    // setPayable("0")
+    setPayable(0);
+    console.log("selectedddddddd", selectedCourse);
     selectedCourse.forEach((course) => {
       filterCourses.forEach((courseData) => {
         if (courseData.c_name === course) {
           let amount = Number(courseData.c_fee);
+          console.log("amount", typeof amount);
           setPayable((prev) => (prev += amount));
+          console.log("amountttttt", payable);
         }
       });
     });

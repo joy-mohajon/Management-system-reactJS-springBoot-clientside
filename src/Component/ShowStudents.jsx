@@ -13,13 +13,12 @@ const ShowStudents = ({ update }) => {
 
   const [flag, setFlag] = useState(true);
 
-  // console.log("studentttttttttttttt", data);
+  console.log("studentttttttttttttt", data);
   // console.log("courses", courses);
 
   useEffect(() => {
     refetch();
     // console.log("updataegggggggg", update);
-    
   }, [refetch, update, flag]);
 
   const deleteStudent = async (id) => {
@@ -49,6 +48,9 @@ const ShowStudents = ({ update }) => {
               Department
             </th>
             <th className="text-center" scope="col">
+              Payable
+            </th>
+            <th className="text-center" scope="col">
               Details
             </th>
           </tr>
@@ -64,6 +66,7 @@ const ShowStudents = ({ update }) => {
                   <td className="text-center">{student.email}</td>
                   <td className="text-center">{student.semester}</td>
                   <td className="text-center">{student.department}</td>
+                  <td className="text-center">{student.payable}</td>
                   <td className="d-flex justify-content-center align-item-center flex-row flex-nowrap">
                     <Link
                       to="details/"

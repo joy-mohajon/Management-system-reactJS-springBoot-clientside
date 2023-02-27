@@ -31,7 +31,7 @@ const AddStudent = ({ updateState }) => {
     if (isEmpty(Semester && dptName && selectedCourse)) {
       return;
     }
-
+ console.log("amountttttt", payable);
     const info = {
       name: stdName,
       roll: stdId,
@@ -83,7 +83,9 @@ const AddStudent = ({ updateState }) => {
       filterCourses.forEach((courseData) => {
         if (courseData.c_name === course) {
           let amount = Number(courseData.c_fee);
+          console.log("amount", typeof amount);
           setPayable((prev) => (prev += amount));
+          console.log("amountttttt", payable);
         }
       });
     });
