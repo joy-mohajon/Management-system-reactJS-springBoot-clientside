@@ -3,21 +3,23 @@ import { filter, isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import fetchCourses from "../Fetchdata/fetchCourses";
+import AlertMessage from "./AlertMessage";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 
 const Details = (props) => {
   const location = useLocation();
-  console.log("location", location);
+  // console.log("location", location);
   const showStudent = location.state.student;
   const data = location.state.courses;
-  console.log("shwoStudent", showStudent.courses);
-  //   const { data } = useQuery("courses", () => fetchCourses());
+  // console.log("shwoStudent", showStudent.courses);
+
+  const [show, setShow] = useState(false);
 
   const courseData = [];
   const [filterCourses, setFilterCourses] = useState(courseData);
-  console.log("filterC", filterCourses);
+  // console.log("filterC", filterCourses);
   const departments = [];
   const [dptNames, setDptNames] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState([]);
@@ -32,12 +34,10 @@ const Details = (props) => {
   const [address, setAddress] = useState(showStudent.address);
   const [payable, setPayable] = useState(showStudent.payable);
 
+  const navigate = useNavigate();
+
   const submitHandler = (e) => {
     e.preventDefault();
-
-    if (isEmpty(Semester && dptName && selectedCourse)) {
-      return;
-    }
 
     const info = {
       id: id,
@@ -53,12 +53,21 @@ const Details = (props) => {
 
     const postStudent = async () => {
       await axios
-        .post("http://localhost:8081/api/addstudent/update", info)
+        .post("http://localhost:8081/api/student/update", info)
         .then((res) => console.log("addStudent:", res))
         .catch((err) => console.log("stdErr: ", err));
     };
     postStudent();
+    setShow(true);
+    navigate(-1);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(false);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [show]);
 
   useEffect(() => {
     if (data) {
@@ -73,7 +82,7 @@ const Details = (props) => {
     // console.log("courseDta", courseData);
     setDptNames(departments);
     setFilterCourses(courseData);
-    console.log("course", selectedCourse);
+    // console.log("course", selectedCourse);
     const newCourses = Object.values(data).filter(
       (course) => course.department === dptName
     );
@@ -82,7 +91,7 @@ const Details = (props) => {
 
   const selectedCourseData = (courses) => {
     setSelectedCourse(courses);
-
+    // setPayable("0")
     selectedCourse.forEach((course) => {
       filterCourses.forEach((courseData) => {
         if (courseData.c_name === course) {
@@ -107,14 +116,21 @@ const Details = (props) => {
 
   return (
     <Form className="mt-4 mb-4" onSubmit={submitHandler}>
+      <Row className="mb-3 d-flex justify-content-center align-item-center">
+        <Form.Group as={Col} controlId="formGridEmail" className="">
+          <Form.Label>Total Payable: </Form.Label>
+          <Form.Control type="text" disabled value={payable} className="w-50" />
+        </Form.Group>
+        {show && <AlertMessage text={"Successfully updated"} />}
+      </Row>
+
       <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
         <Form.Label>Name</Form.Label>
         <Form.Control
           type="text"
-          //   placeholder="Enter your name"
+          // placeholder="Enter your name"
           value={stdName}
           onChange={(e) => setStdName(e.target.value)}
-          required
         />
       </Form.Group>
       <Row className="mb-3">
@@ -125,7 +141,6 @@ const Details = (props) => {
             // placeholder="Enter roll no"
             value={stdId}
             onChange={(e) => setStdId(e.target.value)}
-            required
           />
         </Form.Group>
         <Form.Group as={Col} controlId="formGridState">
@@ -133,7 +148,6 @@ const Details = (props) => {
           <Form.Select
             value={Semester}
             onChange={(e) => setSemester(e.target.value)}
-            required
           >
             <option className="d-none">Choose...</option>
             <option value="Fall 2023">Fall 2023</option>
@@ -177,7 +191,6 @@ const Details = (props) => {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
       </Form.Group>
 
@@ -188,7 +201,6 @@ const Details = (props) => {
           placeholder="Enter your address"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          required
         />
       </Form.Group>
 

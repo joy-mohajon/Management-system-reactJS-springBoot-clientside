@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useQuery } from "react-query";
 import { Link, Navigate, Redirect, useNavigate } from "react-router-dom";
@@ -11,17 +11,21 @@ const ShowStudents = ({ update }) => {
   const { data: courses } = useQuery("courses", () => fetchCourses());
   const navigate = useNavigate();
 
-  console.log("student", data);
-  console.log("courses", courses);
+  const [flag, setFlag] = useState(true);
+
+  // console.log("studentttttttttttttt", data);
+  // console.log("courses", courses);
 
   useEffect(() => {
     refetch();
-  }, [refetch, update]);
+    // console.log("updataegggggggg", update);
+    
+  }, [refetch, update, flag]);
 
   const deleteStudent = async (id) => {
     await axios
       .post(`http://localhost:8081/api/student/${id}/delete`)
-      .then((res) => console.log("successfully deleted", res))
+      .then((res) => setFlag(!flag))
       .catch((err) => console.log("error", err));
   };
 

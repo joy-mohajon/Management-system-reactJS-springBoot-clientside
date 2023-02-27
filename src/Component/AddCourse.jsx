@@ -20,7 +20,7 @@ const AddCourse = ({ updateState }) => {
       c_fee: courseFee.trim(),
       department: dptName.trim(),
     };
-    console.log("data:", data);
+    // console.log("data:", data);
 
     const postCourse = async () => {
       await axios

@@ -27,7 +27,7 @@ const AddStudent = ({ updateState }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-
+    // console.log("coursessssssssss", selectedCourse);
     if (isEmpty(Semester && dptName && selectedCourse)) {
       return;
     }
@@ -69,11 +69,16 @@ const AddStudent = ({ updateState }) => {
     // console.log("courseDta", courseData);
     setDptNames(departments);
     setFilterCourses(courseData);
+    // const newCourses = Object.values(data).filter(
+    //   (course) => course.department === dptName
+    // );
+    // setFilterCourses(newCourses);
   }, [data]);
 
   const selectedCourseData = (courses) => {
     setSelectedCourse(courses);
-
+    // console.log("recentttttt", courses);
+    // console.log("recenttttttstateeeeeeee", selectedCourse);
     selectedCourse.forEach((course) => {
       filterCourses.forEach((courseData) => {
         if (courseData.c_name === course) {
@@ -94,7 +99,7 @@ const AddStudent = ({ updateState }) => {
   };
 
   return (
-    <Form className="mt-4" onSubmit={submitHandler}>
+    <Form className="mt-4 w-100" onSubmit={submitHandler}>
       <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
         <Form.Label>Name</Form.Label>
         <Form.Control

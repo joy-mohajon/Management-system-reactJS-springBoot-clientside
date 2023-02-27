@@ -8,7 +8,7 @@ const MultiSelectDropdown = ({ courses, selectedCourses, showStudent }) => {
 
   useEffect(() => {
     if (!isEmpty(showStudent) && !isEmpty(courses)) {
-      console.log("LLLLLLLLLLLLLLLLLLLLLLLLL");
+      // console.log("LLLLLLLLLLLLLLLLLLLLLLLLL");
       const { department } = courses[0];
 
       if (showStudent && department === showStudent.department) {
@@ -22,9 +22,12 @@ const MultiSelectDropdown = ({ courses, selectedCourses, showStudent }) => {
 
   const handleCheckboxChange = (event, option) => {
     const value = event.target.value;
+    // console.log("valueeeeeeeee", value);
     if (event.target.checked) {
-      setSelectedOptions([...selectedOptions, value]);
+      selectedOptions.push(value)
+      // setSelectedOptions((preOptions) => preOptions.push(value));
       selectedCourses(selectedOptions);
+      // console.log("selectedddddddddddddddd", selectedOptions);
     } else {
       setSelectedOptions(selectedOptions.filter((option) => option !== value));
     }
