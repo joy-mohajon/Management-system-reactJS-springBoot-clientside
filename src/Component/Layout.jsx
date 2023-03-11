@@ -10,10 +10,12 @@ const Layout = () => {
       <Navbar bg="primary" variant="dark">
         <Container>
           <Navbar.Brand href="#home"></Navbar.Brand>
-          <Nav className="m-auto">
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/student/">Add Student</Nav.Link>
-            <Nav.Link href="/addcourse/">Add Course</Nav.Link>
+          <Nav className="ml-auto">
+            <Nav.Link href="/"></Nav.Link>
+            {/* <Nav.Link href="/student/">Add Student</Nav.Link>
+            <Nav.Link href="/addcourse/">Add Course</Nav.Link> */}
+            <Nav.Link href="/signin">Login</Nav.Link>
+            <Nav.Link href="/signup">Signup</Nav.Link>
             {/* <Nav.Link href="/ShowDetails/">Show Details</Nav.Link> */}
           </Nav>
         </Container>

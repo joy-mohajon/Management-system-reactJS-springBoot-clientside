@@ -8,11 +8,10 @@ const AddCourse = ({ updateState }) => {
   const [courseCode, setCourseCode] = useState("");
   const [courseCredit, setCourseCredit] = useState("");
   const [courseFee, setCourseFee] = useState("");
-  const [update, setUpdate] = useState(true);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    setUpdate((preUpdate) => !preUpdate);
+
     const data = {
       c_name: courseName.trim(),
       c_code: courseCode.trim(),
@@ -42,6 +41,7 @@ const AddCourse = ({ updateState }) => {
 
   return (
     <Form className="mt-4" onSubmit={submitHandler}>
+      <h2 className="text-center">Add Course</h2>
       <Form.Group as={Col} controlId="" className="mb-3">
         <Form.Label>Course Name</Form.Label>
         <Form.Control

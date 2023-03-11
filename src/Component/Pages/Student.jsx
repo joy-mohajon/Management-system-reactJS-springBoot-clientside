@@ -24,10 +24,8 @@ const Student = () => {
   }, [update]);
 
   return (
-    <div
-      style={{ display: "flex", flexFlow: "column", alignItems: "center" }}
-    >
-      {show && <AlertMessage text={"Successfully added"}/>}
+    <div style={{ display: "flex", flexFlow: "column", alignItems: "center" }}>
+      {show && <AlertMessage text={"Successfully added"} />}
       <QueryClientProvider client={client}>
         <AddStudent updateState={updateState} />
         <ShowStudents update={update} />

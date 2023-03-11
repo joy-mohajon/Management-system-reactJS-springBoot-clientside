@@ -27,11 +27,12 @@ const AddStudent = ({ updateState }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // console.log("coursessssssssss", selectedCourse);
+
     if (isEmpty(Semester && dptName && selectedCourse)) {
       return;
     }
- console.log("amountttttt", payable);
+
+    console.log("amountttttt", payable);
     const info = {
       name: stdName,
       roll: stdId,
@@ -51,7 +52,6 @@ const AddStudent = ({ updateState }) => {
     };
     postStudent();
 
-    // for update student table
     updateState();
   };
 
@@ -59,26 +59,21 @@ const AddStudent = ({ updateState }) => {
     if (data) {
       data.forEach((course) => {
         const { department } = course;
-        // console.log(department);
         if (!departments.includes(department)) {
           departments.push(department);
         }
         courseData.push(course);
       });
     }
-    // console.log("courseDta", courseData);
+
     setDptNames(departments);
     setFilterCourses(courseData);
-    // const newCourses = Object.values(data).filter(
-    //   (course) => course.department === dptName
-    // );
-    // setFilterCourses(newCourses);
   }, [data]);
 
   const selectedCourseData = (courses) => {
     setSelectedCourse(courses);
-    // console.log("recentttttt", courses);
-    // console.log("recenttttttstateeeeeeee", selectedCourse);
+    console.log("recentttttt", courses);
+
     selectedCourse.forEach((course) => {
       filterCourses.forEach((courseData) => {
         if (courseData.c_name === course) {
@@ -102,6 +97,7 @@ const AddStudent = ({ updateState }) => {
 
   return (
     <Form className="mt-4 w-100" onSubmit={submitHandler}>
+      <h2 className="text-center">Add Student</h2>
       <Form.Group as={Col} controlId="formGridEmail" className="mb-3">
         <Form.Label>Name</Form.Label>
         <Form.Control
